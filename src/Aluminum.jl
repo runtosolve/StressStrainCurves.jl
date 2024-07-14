@@ -30,3 +30,4 @@ mutable struct Rasmussen2003{N, F} <: AluminumStessStrainCurveModel where {F <: 
         return new{N, F}(E, E₀₂, σ₀₂, ϵ₀₂, σᵤ, ϵᵤ, n, m, StaticArrays.SVector{N, F}(σ), StaticArrays.SVector{N, F}(ϵ))
     end
 end
+

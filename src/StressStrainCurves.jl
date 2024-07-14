@@ -14,5 +14,8 @@ export AluminumStessStrainCurveModel
 # Include the stress-strain curve models for 
 include("Aluminum.jl")
 export Rasmussen2003
-export addpoint!
+
+include("MakieRecipes.jl")
+export stressstraincurveplot
+export stressstraincurveplot!
 end
