@@ -46,7 +46,7 @@ end
 
 function calculate_true_strain(engineering_strain)
 
-    true_strain = ln(1 + engineering_strain)
+    true_strain = log(1 + engineering_strain)
 
 end
 
