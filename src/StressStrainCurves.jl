@@ -18,8 +18,7 @@ export Rasmussen2003
 include("MakieRecipes.jl")
 export stressstraincurveplot
 export stressstraincurveplot!
-end
-<<<<<<< HEAD
+
 
 function calculate_true_stress(engineering_stress, engineering_strain)
 
@@ -35,5 +34,3 @@ end
 
 
 end # module StressStrainCurves
-=======
->>>>>>> AkchurinDA/Damir
