@@ -1,1 +1,1 @@
-# StressStrainCurves
+# Stress-Strain Curves
