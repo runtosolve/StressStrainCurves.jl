@@ -17,3 +17,19 @@ using Test
 
     # TODO: Add tests here.
 end
+
+@testset "Steel: Yun and Gardner (2017)" begin 
+    # Define the stress-strain curve parameters:
+    E   = 29000 # ksi
+    Fᵧ  = 50    # ksi
+    Fᵤ  = 70    # ksi
+    ϵₛₕ  = 0.05
+
+    # Define the strains of interest:
+    ϵ = collect(range(0.0, 0.05, 0.005))
+
+    # Create the stress-strain curve:
+    StressStrainCurveModel = YunGardner2017(E, Fᵧ, Fᵤ, ϵₛₕ, ϵ)
+
+    # TODO: Add tests here.
+end

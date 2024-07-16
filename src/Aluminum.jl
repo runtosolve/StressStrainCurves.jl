@@ -1,4 +1,4 @@
-mutable struct Rasmussen2003{N, F} <: AluminumStessStrainModel where {F <: AbstractFloat}
+mutable struct Rasmussen2003{N, F} <: AluminumStressStrainCurveModel where {F <: AbstractFloat}
     E  
     E₀₂
     σ₀₂
@@ -6,11 +6,18 @@ mutable struct Rasmussen2003{N, F} <: AluminumStessStrainModel where {F <: Abstr
     σᵤ 
     ϵᵤ 
     n  
-    m  
+    m
+
     σ::StaticArrays.SVector{N, F}
     ϵ::StaticArrays.SVector{N, F}
 
     function Rasmussen2003(E, σ₀₂, σᵤ, n, σ::AbstractVector{T}) where {T <: Real}
+        # Compute the number of stress-strain points:
+        N = length(σ)
+
+        # Promote type:
+        F = float(T)
+
         # Compute the material model parameters:
         E₀₂ = E / (1 + 0.002 * n * (E / σ₀₂))
         ϵ₀₂ = σ₀₂ / E
@@ -19,12 +26,6 @@ mutable struct Rasmussen2003{N, F} <: AluminumStessStrainModel where {F <: Abstr
 
         # Compute the strains:
         ϵ = (σ .- σ₀₂) ./ E₀₂ .+ ϵᵤ .* ((σ .- σ₀₂) ./ (σᵤ - σ₀₂)) .^ m .+ ϵ₀₂
-        
-        # Compute the number of stress-strain points:
-        N = length(σ)
-
-        # Promote type:
-        F = float(T)
 
         # Return the results:
         return new{N, F}(E, E₀₂, σ₀₂, ϵ₀₂, σᵤ, ϵᵤ, n, m, StaticArrays.SVector{N, F}(σ), StaticArrays.SVector{N, F}(ϵ))

@@ -3,13 +3,13 @@ module StressStrainCurves
 import StaticArrays
 
 # Define abstract types:
-abstract type StressStrainModel end
-abstract type SteelStessStrainModel <: StressStrainModel end
-abstract type AluminumStessStrainModel <: StressStrainModel end
+abstract type StressStrainCurveModel end
+abstract type SteelStressStrainCurveModel <: StressStrainCurveModel end
+abstract type AluminumStressStrainCurveModel <: StressStrainCurveModel end
 
-export StressStrainModel
-export SteelStressStrainModel
-export AluminumStressStrainModel
+export StressStrainCurveModel
+export SteelStressStrainCurveModel
+export AluminumStressStrainCurveModel
 
 # Include the stress-strain curve models for 
 include("Aluminum.jl")
@@ -22,18 +22,15 @@ include("MakieRecipes.jl")
 export stressstrainplot
 export stressstrainplot!
 
+function calculate_true_stress(σₑ, ϵₑ)
+    σₜ = σₑ * (1 + ϵₑ)
 
-function calculate_true_stress(engineering_stress, engineering_strain)
-
-    true_stress = engineering_stress * (1 + engineering_strain)
-
+    return σₜ
 end
 
-function calculate_true_strain(engineering_strain)
+function calculate_true_strain(ϵₑ)
+    ϵₜ = log(1 + ϵₑ)
 
-    true_strain = log(1 + engineering_strain)
-
+    return ϵₜ
 end
-
-
 end # module StressStrainCurves
