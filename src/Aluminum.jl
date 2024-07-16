@@ -1,4 +1,4 @@
-mutable struct Rasmussen2003{N, F} <: AluminumStessStrainCurveModel where {F <: AbstractFloat}
+mutable struct Rasmussen2003{N, F} <: AluminumStessStrainModel where {F <: AbstractFloat}
     E  
     E₀₂
     σ₀₂
