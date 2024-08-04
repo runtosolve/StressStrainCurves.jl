@@ -1,4 +1,4 @@
-mutable struct YunGardner2017{N, F} <: SteelStessStrainCurveModel where {F <: AbstractFloat}
+mutable struct YunGardner2017{N, F} <: SteelStessStrainModel where {F <: AbstractFloat}
     E 
     Fᵧ
     Fᵤ  
@@ -27,6 +27,8 @@ mutable struct YunGardner2017{N, F} <: SteelStessStrainCurveModel where {F <: Ab
             else
                 error("The strain ϵ cannot be greater than ϵᵤ.")
             end
+
+        end
         
         # Promote type:
         F = float(T)
