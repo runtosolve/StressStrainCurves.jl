@@ -23,15 +23,16 @@ export stressstrainplot
 export stressstrainplot!
 
 
-function calculate_true_stress(engineering_stress, engineering_strain)
+function calculate_true_stress_strain(StressStrainCurve)
 
-    true_stress = engineering_stress * (1 + engineering_strain)
+    engineering_stress = Vector(StressStrainCurve.σ)
+    engineering_strain = Vector(StressStrainCurve.ϵ)
 
-end
+    true_stress = engineering_stress .* (1 .+ engineering_strain)
 
-function calculate_true_strain(engineering_strain)
+    true_strain = log.(1 .+ engineering_strain)
 
-    true_strain = log(1 + engineering_strain)
+    return true_strain, true_stress
 
 end
 
