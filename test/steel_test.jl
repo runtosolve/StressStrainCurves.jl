@@ -1,4 +1,5 @@
 using StressStrainCurves
+using CairoMakie
 
 E = 29000.0
 Fᵧ = 55.0

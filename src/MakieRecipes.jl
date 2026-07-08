@@ -1,7 +1,7 @@
-import MakieCore
+import Makie
 
-MakieCore.@recipe(StressStrainPlot, StressStrainCurve) do scene
-    MakieCore.Attributes(
+Makie.@recipe(StressStrainPlot, StressStrainCurve) do scene
+    Makie.Attributes(
         color       = :black,
         marker      = :circle,
         markersize  = 6,
@@ -9,17 +9,17 @@ MakieCore.@recipe(StressStrainPlot, StressStrainCurve) do scene
         strokewidth = 0)
 end
 
-function MakieCore.plot!(P::StressStrainPlot)
+function Makie.plot!(P::StressStrainPlot)
     # Extract the stress-strain curve model:
     SSCM = P[:StressStrainCurve]
     σ = Vector(SSCM[].σ)
     ϵ = Vector(SSCM[].ϵ)
 
     # Create the plot:
-    MakieCore.lines!(P, ϵ, σ, 
+    Makie.lines!(P, ϵ, σ,
         color = P[:color])
 
-    MakieCore.scatter!(P, ϵ, σ, 
+    Makie.scatter!(P, ϵ, σ,
         color       = P[:color],
         marker      = P[:marker],
         markersize  = P[:markersize],

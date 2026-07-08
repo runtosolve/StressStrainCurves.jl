@@ -17,6 +17,9 @@ export Rasmussen2003
 
 include("Steel.jl")
 export YunGardner2017
+export YunGardner2025_HotrolledSteel
+export YunGardner2025_ColdformedSteel
+
 
 include("MakieRecipes.jl")
 export stressstrainplot

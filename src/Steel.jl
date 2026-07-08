@@ -42,6 +42,108 @@ mutable struct YunGardner2017{N, F} <: SteelStessStrainModel where {F <: Abstrac
     end
 end
 
+mutable struct YunGardner2025_HotrolledSteel{N, F} <: SteelStessStrainModel where {F <: AbstractFloat}
+    E 
+    Fᵧ
+    Fᵤ  
+    ϵₛₕ        
+    ϵᵤ
+  
+    σ::StaticArrays.SVector{N, F}
+    ϵ::StaticArrays.SVector{N, F}
+
+    function YunGardner2025_HotrolledSteel(E, Fᵧ, Fᵤ, ϵ::AbstractVector{T}) where {T <: Real}      
+        
+        # Compute the number of stress-strain points:
+        N = length(ϵ)
+
+        # Calculate yield strain:
+        ϵᵧ = Fᵧ / E
+
+        # Calculate strain hardening strain at the end of the yield plateau:
+        ϵₛₕ = min(max((0.1*(Fᵧ/Fᵤ))-0.055, 0.015), 0.03)  
+
+        # Calculate ultimate strain:
+        ϵᵤ = (1+(Fᵧ/(0.0008*E)))^(-1.55)
+
+
+        # Initialize stress vector:
+        σ = Vector{Float64}(undef, N)
+
+        # Compute the stresses:
+        for i in eachindex(ϵ)
+
+            if ϵ[i] <= ϵᵧ
+                σ[i] = E * ϵ[i]
+            elseif (ϵ[i] > ϵᵧ) & (ϵ[i] <= ϵₛₕ)
+                σ[i] = Fᵧ
+            elseif (ϵ[i] > ϵₛₕ) & (ϵ[i] <= ϵᵤ)
+                σ[i] = Fᵧ + (Fᵤ - Fᵧ) * (0.4(ϵ[i] - ϵₛₕ)/(ϵᵤ - ϵₛₕ) + (2(ϵ[i] - ϵₛₕ)/(ϵᵤ - ϵₛₕ))/(1 + 400((ϵ[i] - ϵₛₕ)/(ϵᵤ - ϵₛₕ))^5)^(1/5))
+            else
+                error("The strain ϵ cannot be greater than ϵᵤ.")
+            end
+
+        end
+        
+        # Promote type:
+        F = float(T)
+
+        # Return the results:
+        return new{N, F}(E, Fᵧ, Fᵤ, ϵₛₕ, ϵᵤ, StaticArrays.SVector{N, F}(σ), StaticArrays.SVector{N, F}(ϵ))
+    end
+end
+
+mutable struct YunGardner2025_ColdformedSteel{N, F} <: SteelStessStrainModel where {F <: AbstractFloat}
+    E 
+    Fᵧ
+    Fᵤ  
+    ϵₛₕ        
+    ϵᵤ
+  
+    σ::StaticArrays.SVector{N, F}
+    ϵ::StaticArrays.SVector{N, F}
+
+    function YunGardner2025_ColdformedSteel(E, Fᵧ, Fᵤ, ϵ::AbstractVector{T}) where {T <: Real}      
+        
+        # Compute the number of stress-strain points:
+        N = length(ϵ)
+
+        # Calculate yield strain:
+        ϵᵧ = Fᵧ / E
+
+        # Calculate strain hardening strain at the end of the yield plateau:
+        ϵₛₕ = min(max((0.1*(Fᵧ/Fᵤ))-0.055, 0.015), 0.03)
+
+        # Calculate ultimate strain:
+        ϵᵤ = (1+(Fᵧ/(0.0008*E)))^(-1.65)
+
+
+        # Initialize stress vector:
+        σ = Vector{Float64}(undef, N)
+
+        # Compute the stresses:
+        for i in eachindex(ϵ)
+
+            if ϵ[i] <= ϵᵧ
+                σ[i] = E * ϵ[i]
+            elseif (ϵ[i] > ϵᵧ) & (ϵ[i] <= ϵₛₕ)
+                σ[i] = Fᵧ
+            elseif (ϵ[i] > ϵₛₕ) & (ϵ[i] <= ϵᵤ)
+                σ[i] = Fᵧ + (Fᵤ - Fᵧ) * (0.4(ϵ[i] - ϵₛₕ)/(ϵᵤ - ϵₛₕ) + (2(ϵ[i] - ϵₛₕ)/(ϵᵤ - ϵₛₕ))/(1 + 400((ϵ[i] - ϵₛₕ)/(ϵᵤ - ϵₛₕ))^5)^(1/5))
+            else
+                error("The strain ϵ cannot be greater than ϵᵤ.")
+            end
+
+        end
+        
+        # Promote type:
+        F = float(T)
+
+        # Return the results:
+        return new{N, F}(E, Fᵧ, Fᵤ, ϵₛₕ, ϵᵤ, StaticArrays.SVector{N, F}(σ), StaticArrays.SVector{N, F}(ϵ))
+    end
+end
+
 mutable struct Rasmussen2003StainlessSteel{N, F} <: SteelStessStrainModel where {F <: AbstractFloat}
     E0 
     σ02

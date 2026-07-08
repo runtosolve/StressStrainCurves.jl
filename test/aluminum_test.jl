@@ -9,6 +9,6 @@ n = 7.0
 σ = collect(range(σ_02, σ_u, 20))
 
 
-properties = StressStrainCurves.Rasmussen2003Aluminum(E, σ_02, σ_u, n, σ)
+properties = StressStrainCurves.Rasmussen2003(E, σ_02, σ_u, n, σ)
 
-scatter(properties.ϵ, properties.σ)
+scatter(Vector(properties.ϵ), Vector(properties.σ))

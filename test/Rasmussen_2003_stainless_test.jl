@@ -1,4 +1,5 @@
-using StressStrainCurves 
+using StressStrainCurves
+using CairoMakie
 
 E0 = 29000000.0
 ν = 0.30
