@@ -2,18 +2,20 @@ mutable struct YunGardner2017{N, F} <: SteelStessStrainModel where {F <: Abstrac
     E 
     Fᵧ
     Fᵤ  
-    ϵₛₕ        
-    ϵᵤ
+    # ϵₛₕ        
+    # ϵᵤ
   
     σ::StaticArrays.SVector{N, F}
     ϵ::StaticArrays.SVector{N, F}
 
-    function YunGardner2017(E, Fᵧ, Fᵤ, ϵₛₕ, ϵᵤ, ϵ::AbstractVector{T}) where {T <: Real}      
+    function YunGardner2017(E, Fᵧ, Fᵤ, ϵ::AbstractVector{T}) where {T <: Real}      
         
         # Compute the number of stress-strain points:
         N = length(ϵ)
 
         # Calculate yield strain:
+        ϵₛₕ = min(max((0.1*(Fᵧ/Fᵤ))-0.055,0.015),0.03)
+        ϵᵤ = max((0.6*(1-(Fᵧ/Fᵤ))),0.06)
         ϵᵧ = Fᵧ / E
 
         # Initialize stress vector:
